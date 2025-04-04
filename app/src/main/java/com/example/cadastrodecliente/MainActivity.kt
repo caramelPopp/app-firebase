@@ -4,13 +4,30 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cadastrodecliente.ui.theme.CadastroDeClienteTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,10 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CadastroDeClienteTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    App()
                 }
             }
         }
@@ -31,17 +45,61 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun App() {
+    var name by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+
+    Column (
+        Modifier.background(Color.LightGray).fillMaxSize()
+    ) {
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp),
+            Arrangement.Center
+        ){
+            Text("Cadastro", fontFamily = FontFamily.Default, fontSize = 35.sp)
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp),
+            Arrangement.Center
+        ){
+            TextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Nome:") }
+            )
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp),
+            Arrangement.Center
+        ){
+            TextField(
+                value = phone,
+                onValueChange = { phone = it },
+                label = { Text("Telefone:") }
+            )
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp),
+            Arrangement.Center
+        ){
+            Button(
+                onClick = {
+
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+            ) {
+                Text("Cadastrar")
+            }
+        }
+    }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun GreetingPreview() {
+fun AppPreview(){
     CadastroDeClienteTheme {
-        Greeting("Android")
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            App()
+        }
     }
 }
