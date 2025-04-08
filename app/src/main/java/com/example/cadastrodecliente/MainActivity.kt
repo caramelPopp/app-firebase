@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.OptIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +30,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
 import com.example.cadastrodecliente.ui.theme.CadastroDeClienteTheme
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +50,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 fun App() {
     var name by remember { mutableStateOf("") }
@@ -123,7 +129,20 @@ fun App() {
         ){
             Button(
                 onClick = {
-
+                    val db = Firebase.firestore
+                    val user = hashMapOf(
+                        "first" to "Ada",
+                        "last" to "Lovelace",
+                        "born" to 1815
+                    )
+                    db.collection("users")
+                        .add(user)
+                        .addOnSuccessListener { documentReference ->
+                            Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w(TAG, "Error adding document", e)
+                        }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
             ) {
