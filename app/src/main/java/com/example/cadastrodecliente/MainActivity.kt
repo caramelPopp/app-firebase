@@ -1,5 +1,6 @@
 package com.example.cadastrodecliente
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -131,10 +130,13 @@ fun App() {
                 onClick = {
                     val db = Firebase.firestore
                     val user = hashMapOf(
-                        "first" to "Ada",
-                        "last" to "Lovelace",
-                        "born" to 1815
+                        "nome" to name,
+                        "nascimento" to birth,
+                        "email" to email,
+                        "telefone" to phone,
+                        "endereco" to address
                     )
+
                     db.collection("users")
                         .add(user)
                         .addOnSuccessListener { documentReference ->
@@ -143,6 +145,12 @@ fun App() {
                         .addOnFailureListener { e ->
                             Log.w(TAG, "Error adding document", e)
                         }
+
+                    name = ""
+                    birth = ""
+                    email = ""
+                    phone = ""
+                    address = ""
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
             ) {
