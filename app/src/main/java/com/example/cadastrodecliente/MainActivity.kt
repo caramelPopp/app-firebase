@@ -1,7 +1,9 @@
 package com.example.cadastrodecliente
 
 import android.content.ContentValues.TAG
+import android.icu.text.NumberFormat
 import android.os.Bundle
+import android.provider.ContactsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,8 +15,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -26,12 +30,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardType.Companion.Decimal
+import androidx.compose.ui.text.input.KeyboardType.Companion.Email
+import androidx.compose.ui.text.input.KeyboardType.Companion.Phone
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import com.example.cadastrodecliente.ui.theme.CadastroDeClienteTheme
+import com.example.cadastrodecliente.ui.theme.Pink40
+import com.example.cadastrodecliente.ui.theme.Purple40
+import com.example.cadastrodecliente.ui.theme.PurpleGrey40
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
@@ -59,7 +69,7 @@ fun App() {
     var address by remember { mutableStateOf("") }
 
     Column (
-        Modifier.background(Color.LightGray).fillMaxSize()
+        Modifier.background(Color.Transparent).fillMaxSize()
     ) {
         Row(
             Modifier.fillMaxWidth().padding(20.dp)
@@ -70,13 +80,13 @@ fun App() {
             Modifier.fillMaxWidth().padding(20.dp),
             Arrangement.Center
         ){
-            Text("Cadastro de Cliente", fontFamily = FontFamily.Default, fontSize = 35.sp)
+            Text("Crie sua conta!", fontFamily = FontFamily.Default, fontSize = 35.sp, color = Purple40)
         }
         Row(
             Modifier.fillMaxWidth().padding(20.dp),
             Arrangement.Center
         ){
-            TextField(
+            OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
                 label = { Text("Nome:") }
@@ -86,37 +96,42 @@ fun App() {
             Modifier.fillMaxWidth().padding(20.dp),
             Arrangement.Center
         ){
-            TextField(
+            OutlinedTextField(
                 value = birth,
                 onValueChange = { birth = it },
-                label = { Text("Data de Nascimento:") }
+                label = { Text("Data de Nascimento:") },
+                singleLine = true
             )
         }
         Row(
             Modifier.fillMaxWidth().padding(20.dp),
             Arrangement.Center
         ){
-            TextField(
+            OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("E-mail:") }
+                label = { Text("E-mail:") },
+                maxLines = 2,
+                keyboardOptions = KeyboardOptions(keyboardType = Email)
             )
         }
         Row(
             Modifier.fillMaxWidth().padding(20.dp),
             Arrangement.Center
         ) {
-            TextField(
+            OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it },
-                label = { Text("Telefone:") }
+                label = { Text("Telefone:") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = Phone)
             )
         }
         Row(
             Modifier.fillMaxWidth().padding(20.dp),
             Arrangement.Center
         ) {
-            TextField(
+            OutlinedTextField(
                 value = address,
                 onValueChange = { address = it },
                 label = { Text("Endereço:") }
@@ -152,7 +167,7 @@ fun App() {
                     phone = ""
                     address = ""
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+                colors = ButtonDefaults.buttonColors(containerColor = Purple40)
             ) {
                 Text("Cadastrar")
             }
