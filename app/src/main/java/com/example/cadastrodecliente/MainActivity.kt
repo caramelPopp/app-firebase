@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CadastroDeClienteTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    App()
+                    AppPreview()
                 }
             }
         }
@@ -47,16 +48,24 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     var name by remember { mutableStateOf("") }
+    var birth by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
 
     Column (
         Modifier.background(Color.LightGray).fillMaxSize()
     ) {
         Row(
+            Modifier.fillMaxWidth().padding(20.dp)
+        ) {
+
+        }
+        Row(
             Modifier.fillMaxWidth().padding(20.dp),
             Arrangement.Center
         ){
-            Text("Cadastro", fontFamily = FontFamily.Default, fontSize = 35.sp)
+            Text("Cadastro de Cliente", fontFamily = FontFamily.Default, fontSize = 35.sp)
         }
         Row(
             Modifier.fillMaxWidth().padding(20.dp),
@@ -73,9 +82,39 @@ fun App() {
             Arrangement.Center
         ){
             TextField(
+                value = birth,
+                onValueChange = { birth = it },
+                label = { Text("Data de Nascimento:") }
+            )
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp),
+            Arrangement.Center
+        ){
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("E-mail:") }
+            )
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp),
+            Arrangement.Center
+        ) {
+            TextField(
                 value = phone,
                 onValueChange = { phone = it },
                 label = { Text("Telefone:") }
+            )
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp),
+            Arrangement.Center
+        ) {
+            TextField(
+                value = address,
+                onValueChange = { address = it },
+                label = { Text("Endereço:") }
             )
         }
         Row(
