@@ -56,6 +56,9 @@ class MainActivity : ComponentActivity() {
 @OptIn(UnstableApi::class)
 @Composable
 fun App() {
+    val db = Firebase.firestore
+    var exibition = ""
+
     var name by remember { mutableStateOf("") }
     var birth by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -137,7 +140,6 @@ fun App() {
         ){
             Button(
                 onClick = {
-                    val db = Firebase.firestore
                     val user = hashMapOf(
                         "nome" to name,
                         "nascimento" to birth,
@@ -164,6 +166,33 @@ fun App() {
                 colors = ButtonDefaults.buttonColors(containerColor = Purple40)
             ) {
                 Text("Cadastrar")
+            }
+            Row(
+                Modifier.fillMaxWidth().padding(20.dp)
+            ) {
+
+            }
+            Row(
+                Modifier.fillMaxWidth().padding(20.dp)
+            ) {
+                Button(
+                    onClick = {
+                        db.collection("users")
+                            .get()
+                            .addOnSuccessListener { result ->
+                                for (document in result) {
+                                    exibition += Log.d(TAG, "${document.id} => ${document.data}").toString()
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                exibition = Log.w(TAG, "Error getting documents.", exception).toString()
+                            }
+                        println(exibition)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Purple40)
+                ) {
+                    Text("Verificar Registros")
+                }
             }
         }
     }
