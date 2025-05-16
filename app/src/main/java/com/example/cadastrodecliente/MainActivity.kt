@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -167,36 +168,36 @@ fun App() {
             ) {
                 Text("Cadastrar")
             }
-            Row(
-                Modifier.fillMaxWidth().padding(20.dp)
-            ) {
-
-            }
-            Row(
-                Modifier.fillMaxWidth().padding(20.dp)
-            ) {
-                Button(
-                    onClick = {
-                        db.collection("users")
-                            .get()
-                            .addOnSuccessListener { result ->
-                                for (document in result) {
-                                    exibition += Log.d(TAG, "${document.id} => ${document.data}").toString()
-                                }
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp)
+        ) {
+            Button(
+                onClick = {
+                    db.collection("users")
+                        .get()
+                        .addOnSuccessListener { result ->
+                            for (document in result) {
+                                exibition += Log.d(TAG, "${document.id} => ${document.data}").toString()
                             }
-                            .addOnFailureListener { exception ->
-                                exibition = Log.w(TAG, "Error getting documents.", exception).toString()
-                            }
-                        println(exibition)
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Purple40)
-                ) {
-                    Text("Verificar Registros")
-                }
+                        }
+                        .addOnFailureListener { exception ->
+                            exibition = Log.w(TAG, "Error getting documents.", exception).toString()
+                        }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Purple40)
+            ) {
+                Text("Verificar Registros")
             }
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp)
+        ){
+            Text(exibition)
         }
     }
 }
+
 
 @Preview
 @Composable
